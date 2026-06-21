@@ -172,8 +172,46 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
   .orow,.fgrid,.wgrid{grid-template-columns:1fr}
   .wgrid .witem:nth-last-child(-n+2){border-bottom:1px solid var(--border)}
   .wgrid .witem:last-child{border-bottom:none}
-  .dcard{grid-template-columns:2rem 1fr auto;gap:8px;padding:1rem}
-  h1{font-size:2rem}.nav-sub{display:none}
+  h1{font-size:1.7rem}.nav-sub{display:none}
+  .hero{padding:2.25rem 1.25rem 1.5rem}
+  .hero p{font-size:14px}
+  .wrap{padding:0 1rem 4rem}
+
+  /* Result cards: drop the 3-column grid entirely on phones — the score block
+     was squeezing into a fixed-width 3rd column alongside already-dense flight/
+     price/timezone rows, crushing everything into a sliver of the screen width.
+     Stack rank+content on top, score block full-width below as its own row. */
+  .dcard{
+    display:flex;flex-direction:column;gap:.6rem;
+    padding:1rem;margin-bottom:10px;
+  }
+  .rnum{display:none}
+  .sblock{
+    text-align:left;min-width:0;width:100%;
+    display:flex;align-items:center;gap:14px;
+    padding-top:.6rem;border-top:1px solid var(--border);
+  }
+  .sbig{font-size:1.8rem}
+  .ssub{margin-bottom:0}
+  .mbars{flex:1;flex-direction:column;align-items:stretch;gap:5px}
+  .mbrow{display:grid;grid-template-columns:48px 1fr;gap:8px;align-items:center}
+  .mblbl{width:auto;text-align:left;font-size:11px}
+  .mbt{width:100%}
+
+  /* Dense meta rows (flight times, prices, timezones) — let them wrap onto
+     their own lines instead of fighting for horizontal space, and bump the
+     smallest text up a touch so it's not squinting-small on a phone. */
+  .dmeta{flex-direction:column;gap:6px;font-size:13px}
+  .pricecol{flex-direction:row;flex-wrap:wrap;gap:8px}
+  .cstats{gap:6px}
+  .cpill{font-size:12px;padding:4px 10px}
+  .dname{font-size:15px}
+  .achip,.tag{font-size:11px;padding:4px 10px}
+
+  /* Origin search + filter boxes: more breathing room, bigger tap targets */
+  .add-origin-btn{width:100%;justify-content:center;padding:10px 14px}
+  .fbox{padding:1rem}
+  .witem{padding:12px 0}
 }
 </style>
 </head>
