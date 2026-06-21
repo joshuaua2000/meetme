@@ -674,22 +674,36 @@ function bestFlightTime(originCity, destCity) {
 // SCORING
 // ────────────────────────────────────────────────────────
 function sCost(total,w){
-  if(w>=9) return 72;
-  const base=total<=500?95:total<=700?80:total<=900?62:total<=1200?42:25;
-  return Math.round(base - (100-base)*(10-w)/9*0.3 + 25*(w/10));
+  // Centered around w=5 (neutral): at w=5, all prices score close to 50 so cost
+  // barely influences ranking. Below 5, cost matters less and less (w=0 = ignore
+  // price entirely, flat 50). Above 5, cheaper destinations are increasingly
+  // rewarded. This stops "cheap" from being a permanent thumb on the scale —
+  // previously cheap destinations scored well even at low weight, which is why
+  // short/cheap mid-Atlantic hops (Iceland, Azores, Canaries) kept winning
+  // regardless of what people actually cared about.
+  const raw = Math.max(5, Math.min(100, 105 - total/22)); // 0-100, higher = cheaper
+  const pull = (w-5)/5; // -1 at w=0, 0 at w=5, +1 at w=10
+  return Math.round(50 + (raw-50)*Math.max(0,pull));
 }
 function sWeather(city,month,w){
   const t=city.weather[month-1];
-  const raw=t>=22&&t<=30?100:t>=18&&t<=33?88:t>=14&&t<=35?70:t>=8?45:20;
+  // Continuous curve peaking at 26°C, falling off smoothly either side —
+  // a 14°C city and a 21°C city now score meaningfully differently instead
+  // of both landing in the same "70" plateau.
+  const raw = Math.max(5, 100 - Math.pow(Math.abs(t-26), 1.7)*1.1);
   if(w<=1) return 70;
   return Math.round(20+(raw-20)*(w/10));
 }
-function sNovelty(c,w){return Math.round(Math.min(100,c.nov*(0.5+w/10)))}
-function sOutdoor(c,w){return Math.round(Math.min(100,c.out*(0.5+w/10)))}
-function sNight(c,w){return Math.round(Math.min(100,c.nite*(0.5+w/10)))}
+function sNovelty(c,w){return Math.round(Math.min(100,c.nov*(0.4+w/8)))}
+function sOutdoor(c,w){return Math.round(Math.min(100,c.out*(0.4+w/8)))}
+function sNight(c,w){return Math.round(Math.min(100,c.nite*(0.4+w/8)))}
 function sCityExp(c,w){
-  const penalty=[0,0,8,20,35,50][c.exp];
-  return Math.round(Math.max(10,100-penalty*(1-w/10)));
+  // Same centering fix as sCost: cheap cities (low exp) no longer score near-100
+  // regardless of weight. At w=5 (neutral) all cost tiers score close to 50;
+  // only as the slider moves toward 10 does "cheap city" get meaningfully rewarded.
+  const raw = [0,95,75,50,28,10][c.exp]; // higher = cheaper, 0-100 scale
+  const pull = (w-5)/5;
+  return Math.round(50 + (raw-50)*Math.max(0,pull));
 }
 
 // Indicative flight costs (GBP return), based on distance
@@ -891,7 +905,24 @@ function run(){
       sNight(city,W.w5),
       sCityExp(city,W.w6),
     ];
-    const score=Math.round(scoreArr.reduce((a,b)=>a+b,0)/scoreArr.length);
+    // Genuine weighted average across all 6 dimensions.
+    const wArr=[W.w1,W.w2,W.w3,W.w4,W.w5,W.w6];
+    const wSum=wArr.reduce((a,b)=>a+b,0);
+    const weightedAvg=scoreArr.reduce((a,v,i)=>a+v*wArr[i],0)/wSum;
+    // Standout bonus: reward a city's SINGLE best dimension relative to the average,
+    // capped to count only the top one, not summed across however many dimensions
+    // happen to be strong. This stops destinations that are merely strong in TWO
+    // correlated categories (e.g. islands tend to score high on both outdoor activities
+    // and novelty together) from structurally outscoring destinations that are
+    // exceptionally strong in just ONE category (e.g. a city's nightlife) — both kinds
+    // of "extreme" should compete on equal footing, set by the slider weights, not by
+    // how many boxes a destination happens to tick.
+    let bestDeviation=0;
+    scoreArr.forEach((v,i)=>{
+      const dev = Math.max(0,v-weightedAvg)*(wArr[i]/10);
+      if(dev>bestDeviation) bestDeviation=dev;
+    });
+    const score=Math.round(Math.min(100, weightedAvg + bestDeviation*0.6));
     matched.push({city,score,hs,avg,diff,prices,scoreArr,stopover,rank:matched.length});
   });
 
