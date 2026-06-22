@@ -39,6 +39,7 @@ h1 em{font-style:italic;color:var(--acc)}
 /* ── SEARCH ── */
 .orow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .orow.three{grid-template-columns:1fr 1fr 1fr}
+.orow.four{grid-template-columns:1fr 1fr}
 .origin-toggle{display:flex;align-items:center;gap:8px;margin-top:.6rem}
 .add-origin-btn{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--acc);background:var(--accl);border:1px dashed var(--acc);border-radius:var(--rs);padding:8px 14px;cursor:pointer;transition:opacity .15s}
 .add-origin-btn:hover{opacity:.8}
@@ -84,10 +85,6 @@ h1 em{font-style:italic;color:var(--acc)}
 .pill-toggle input:checked+.track{background:var(--acc)}
 .pill-toggle .track::after{content:'';position:absolute;width:16px;height:16px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
 .pill-toggle input:checked+.track::after{transform:translateX(16px)}
-.stoprow{display:flex;align-items:flex-start;gap:10px;margin-top:10px;background:var(--bg);border:1px solid var(--borderS);border-radius:var(--rs);padding:12px 14px}
-.stoprow input[type=checkbox]{width:16px;height:16px;accent-color:var(--acc);cursor:pointer;flex-shrink:0;margin-top:3px}
-.stoprow label{font-size:13px;color:var(--ink);cursor:pointer}
-.stoprow small{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
 .mrow{margin-top:10px}
 .swrap{background:var(--bg);border:1px solid var(--borderS);border-radius:var(--rs);display:flex;align-items:center;padding:0 12px;height:46px;gap:8px}
 .swrap svg{flex-shrink:0;color:var(--ink3)}
@@ -135,7 +132,6 @@ h1 em{font-style:italic;color:var(--acc)}
 .dcountry{font-weight:400;color:var(--ink2)}
 .badge{font-size:10px;font-weight:500;letter-spacing:.07em;text-transform:uppercase;padding:2px 9px;border-radius:20px}
 .bbest{background:var(--accl);color:var(--acc)}
-.bstop{background:var(--goldl);color:var(--gold);border:1px solid var(--goldb)}
 .dmeta{font-size:12px;color:var(--ink2);display:flex;gap:12px;flex-wrap:wrap;margin-bottom:7px;align-items:flex-start}
 .pricecol{display:flex;flex-direction:column;gap:2px}
 .pline{display:flex;align-items:center;gap:4px;font-size:12px}
@@ -269,11 +265,23 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
       </div>
       <button class="remove-origin-btn" id="removeOrigin3" title="Remove this origin">✕</button>
     </div>
+    <div style="position:relative;display:none" id="origin4Wrap">
+      <div class="flabel">Origin 4</div>
+      <div class="search-wrap" id="sw4">
+        <div class="search-input-row" id="sir4">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="si4" placeholder="Search city or airport…" autocomplete="off">
+          <button class="clear-btn" id="cl4" style="display:none" title="Clear">✕</button>
+        </div>
+        <div class="dropdown" id="dd4"></div>
+      </div>
+      <button class="remove-origin-btn" id="removeOrigin4" title="Remove this origin">✕</button>
+    </div>
   </div>
   <div class="origin-toggle">
     <button class="add-origin-btn" id="addOriginBtn" type="button">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-      Add a third origin
+      <span id="addOriginLbl">Add a third origin</span>
     </button>
   </div>
 
@@ -313,14 +321,6 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
     <div><div class="toggle-label">Limit the average flight time</div><span class="toggle-sub">Turn on to cap the group's average journey length — individual legs can vary more freely</span></div>
     <label class="pill-toggle"><input type="checkbox" id="diffToggle"><span class="track"></span></label>
   </div>
-
-  <div class="stoprow">
-    <input type="checkbox" id="allowStop">
-    <div>
-      <label for="allowStop">Allow one stopover per person</label>
-      <small>Includes routes via one connection — adds roughly 2–4h. When no direct flights match, nearby stopover options are suggested automatically.</small>
-    </div>
-  </div>
 </div>
 
 <!-- CARD 2 -->
@@ -357,7 +357,7 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
     </div>
     <div class="witem">
       <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>City cost of living</div>
-      <div class="wrow"><span class="wend" style="font-size:13px">💰</span><input type="range" id="w6" min="1" max="10" value="5"><span class="wend" style="font-size:13px">🏦</span></div>
+      <div class="wrow"><span class="wend" style="font-size:13px" title="Prefer prestige/expensive cities">🏛️</span><input type="range" id="w6" min="1" max="10" value="5"><span class="wend" style="font-size:13px" title="Prefer budget cities">💰</span></div>
       <div class="whint" id="h6">5 — Balanced; affordable once there is a bonus</div>
     </div>
   </div>
@@ -385,7 +385,6 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
   <div class="map-legend">
     <div class="leg-item"><div class="leg-dot" style="background:#2D5A3D"></div>Origin city</div>
     <div class="leg-item"><div class="leg-dot" style="background:#639922"></div>Matching destination</div>
-    <div class="leg-item"><div class="leg-dot" style="background:#E8A020"></div>Stopover match</div>
     <div class="leg-item"><div class="leg-dot" style="background:#C0392B;opacity:.5"></div>Does not match</div>
   </div>
 </div>
@@ -513,10 +512,10 @@ fetch('cities.json')
 // ────────────────────────────────────────────────────────
 // SEARCH AUTOCOMPLETE
 // ────────────────────────────────────────────────────────
-let selected = [null, null, null]; // selected city data for each origin (3rd unused unless enabled)
+let selected = [null, null, null, null]; // selected city data for each origin (3rd/4th unused unless enabled)
 let activeDD = -1;           // which dropdown is open
-let ddActiveIdx = [-1,-1,-1]; // keyboard nav index
-let originCount = 2;         // 2 or 3 origins
+let ddActiveIdx = [-1,-1,-1,-1]; // keyboard nav index
+let originCount = 2;         // 2, 3, or 4 origins
 
 function searchCities(query) {
   const q = query.toLowerCase().trim();
@@ -602,7 +601,7 @@ function closeDropdown(idx) {
   dd.classList.remove('open');
 }
 
-[0,1,2].forEach(idx => {
+[0,1,2,3].forEach(idx => {
   const input = document.getElementById('si'+(idx+1));
   const clBtn = document.getElementById('cl'+(idx+1));
 
@@ -668,24 +667,56 @@ function closeDropdown(idx) {
   });
 });
 
-// ── Add / remove third origin ──
+// ── Add / remove third & fourth origin ──
+function updateOrowClass() {
+  const orow = document.getElementById('orow');
+  orow.classList.remove('three','four');
+  if(originCount === 3) orow.classList.add('three');
+  if(originCount === 4) orow.classList.add('four');
+}
+
+function clearOrigin(idx) {
+  selected[idx] = null;
+  const input = document.getElementById('si'+(idx+1));
+  const clBtn = document.getElementById('cl'+(idx+1));
+  if(input) input.value = '';
+  if(clBtn) clBtn.style.display = 'none';
+  closeDropdown(idx);
+}
+
 document.getElementById('addOriginBtn').addEventListener('click', () => {
-  originCount = 3;
-  document.getElementById('orow').classList.add('three');
-  document.getElementById('origin3Wrap').style.display = 'block';
-  document.getElementById('addOriginBtn').style.display = 'none';
+  if(originCount === 2) {
+    originCount = 3;
+    document.getElementById('origin3Wrap').style.display = 'block';
+    document.getElementById('addOriginLbl').textContent = 'Add a fourth origin';
+  } else if(originCount === 3) {
+    originCount = 4;
+    document.getElementById('origin4Wrap').style.display = 'block';
+    document.getElementById('addOriginBtn').style.display = 'none';
+  }
+  updateOrowClass();
 });
 
 document.getElementById('removeOrigin3').addEventListener('click', (e) => {
   e.stopPropagation();
   originCount = 2;
-  selected[2] = null;
-  document.getElementById('si3').value = '';
-  document.getElementById('cl3').style.display = 'none';
-  closeDropdown(2);
-  document.getElementById('orow').classList.remove('three');
+  clearOrigin(2);
+  clearOrigin(3);
   document.getElementById('origin3Wrap').style.display = 'none';
+  document.getElementById('origin4Wrap').style.display = 'none';
   document.getElementById('addOriginBtn').style.display = 'flex';
+  document.getElementById('addOriginLbl').textContent = 'Add a third origin';
+  updateOrowClass();
+});
+
+document.getElementById('removeOrigin4').addEventListener('click', (e) => {
+  e.stopPropagation();
+  originCount = 3;
+  clearOrigin(3);
+  document.getElementById('origin4Wrap').style.display = 'none';
+  document.getElementById('addOriginBtn').style.display = 'flex';
+  document.getElementById('addOriginLbl').textContent = 'Add a fourth origin';
+  updateOrowClass();
 });
 
 // Pre-select defaults
@@ -712,22 +743,15 @@ function bestFlightTime(originCity, destCity) {
 // SCORING
 // ────────────────────────────────────────────────────────
 function sCost(total,w){
-  // Centered around w=5 (neutral): at w=5, all prices score close to 50 so cost
-  // barely influences ranking. Below 5, cost matters less and less (w=0 = ignore
-  // price entirely, flat 50). Above 5, cheaper destinations are increasingly
-  // rewarded. This stops "cheap" from being a permanent thumb on the scale —
-  // previously cheap destinations scored well even at low weight, which is why
-  // short/cheap mid-Atlantic hops (Iceland, Azores, Canaries) kept winning
-  // regardless of what people actually cared about.
+  // One-directional: w=0-5 is genuinely neutral (cost doesn't influence ranking),
+  // w=5-10 increasingly rewards cheaper flights. Using a smooth curve so every
+  // notch above 5 has a noticeable effect, not just the last click to 10.
   const raw = Math.max(5, Math.min(100, 105 - total/22)); // 0-100, higher = cheaper
-  const pull = (w-5)/5; // -1 at w=0, 0 at w=5, +1 at w=10
-  return Math.round(50 + (raw-50)*Math.max(0,pull));
+  const pull = Math.max(0, (w-5)/5); // 0 at w≤5, ramps to 1 at w=10
+  return Math.round(50 + (raw-50)*pull);
 }
 function sWeather(city,month,w){
   const t=city.weather[month-1];
-  // Continuous curve peaking at 26°C, falling off smoothly either side —
-  // a 14°C city and a 21°C city now score meaningfully differently instead
-  // of both landing in the same "70" plateau.
   const raw = Math.max(5, 100 - Math.pow(Math.abs(t-26), 1.7)*1.1);
   if(w<=1) return 70;
   return Math.round(20+(raw-20)*(w/10));
@@ -736,12 +760,14 @@ function sNovelty(c,w){return Math.round(Math.min(100,c.nov*(0.4+w/8)))}
 function sOutdoor(c,w){return Math.round(Math.min(100,c.out*(0.4+w/8)))}
 function sNight(c,w){return Math.round(Math.min(100,c.nite*(0.4+w/8)))}
 function sCityExp(c,w){
-  // Same centering fix as sCost: cheap cities (low exp) no longer score near-100
-  // regardless of weight. At w=5 (neutral) all cost tiers score close to 50;
-  // only as the slider moves toward 10 does "cheap city" get meaningfully rewarded.
-  const raw = [0,95,75,50,28,10][c.exp]; // higher = cheaper, 0-100 scale
-  const pull = (w-5)/5;
-  return Math.round(50 + (raw-50)*Math.max(0,pull));
+  // Bidirectional: w=0 favours expensive/prestige, w=10 favours budget.
+  // Raw range compressed to 20-80 (±30 from neutral 50) so this dimension
+  // doesn't overwhelm the composite when pushed to max — previously used 5-95
+  // (±45) which caused exp=1 cities to score 95 at w=10, drowning out every
+  // other dimension and pushing exp=4 cities like Reykjavík off the page entirely.
+  const raw = [0, 80, 65, 50, 35, 20][c.exp]; // higher = cheaper, 20-80 range
+  const pull = (w-5)/5; // -1 at w=0, 0 at w=5, +1 at w=10
+  return Math.round(50 + (raw-50)*pull);
 }
 
 // Indicative flight costs (GBP return), based on distance
@@ -814,7 +840,7 @@ function updateMap(origins, matched, unmatched){
   });
   matched.forEach(r=>{
     const d=r.city;
-    const col=r.stopover?'#E8A020':'#639922';
+    const col='#639922';
     origins.forEach(o => { if(o) drawArc(o.lat,o.lng,d.lat,d.lng,'#2D5A3D',0.22); });
     const mk=L.marker([d.lat,d.lng],{icon:makeIcon(col,r.rank===0?10:7)}).addTo(layerGroup);
     mk.bindTooltip(`<b>${d.flag} ${d.city}</b><br>Score: ${r.score}/100<br>${r.hs.map(fmtH).join(' · ')}`);
@@ -880,7 +906,7 @@ const HINTS={
   w3:[null,"1 — Famous cities are perfectly fine; novelty irrelevant","2 — Happy with well-known tourist destinations","3 — Slight preference for something a bit different","4 — Would enjoy somewhere less well-trodden","5 — Balanced; a mix of familiar and new works","6 — Lean toward off-the-beaten-path options","7 — Strong preference for unusual or underrated destinations","8 — Want somewhere genuinely surprising and different","9 — Very high novelty is a top priority","10 — Must be somewhere few people think to go"],
   w4:[null,"1 — Outdoors not at all important; prefer urban activities","2 — Happy with a mostly indoor city trip","3 — Wouldn't turn down a nice walk but it's low priority","4 — A bit of outdoor time would be a nice addition","5 — Balanced; some outdoor fun alongside city exploring","6 — Outdoor activities are a meaningful part of the trip","7 — Want good hiking, cycling or nature options","8 — Outdoor activities are a top priority","9 — Need excellent outdoor options — mountains, coast, nature","10 — The whole trip is centred on outdoor adventure"],
   w5:[null,"1 — Not fussed about food or nightlife; basic is fine","2 — A decent meal is all that's needed","3 — Would enjoy a good restaurant but won't plan around it","4 — Food scene matters a little; want some good options","5 — Balanced; a decent dining and bar scene is good","6 — Good restaurants are an important part of the trip","7 — Food and nightlife are a significant priority","8 — Want a genuinely great dining and bar scene","9 — Exceptional food and nightlife is one of the main draws","10 — The food and nightlife scene is the whole point"],
-  w6:[null,"1 — Must be cheap once there; expensive cities penalised heavily","2 — Strong preference for budget-friendly cities","3 — Prefer affordable cities; expensive ones score lower","4 — Would lean toward cheaper cities if roughly equal","5 — Balanced; city cost is a factor but not decisive","6 — Willing to pay city prices for the right destination","7 — City cost of living is low priority","8 — Happy in expensive cities; not a concern","9 — Expensive city costs barely register","10 — City costs don't matter — staying anywhere"],
+  w6:[null,"1 — Strong preference for expensive/prestige cities; budget destinations penalised","2 — Lean toward upscale cities; cheap cities score lower","3 — Slight preference for pricier, more cosmopolitan destinations","4 — Marginally prefer higher-end cities, but not a dealbreaker","5 — Neutral; city cost of living doesn't influence the ranking","6 — Slight lean toward affordable destinations","7 — Prefer budget-friendly cities; expensive ones score lower","8 — Strong preference for affordable cities","9 — Budget cities score significantly better","10 — Cheap cities strongly preferred; expensive ones penalised heavily"],
 };
 
 // ────────────────────────────────────────────────────────
@@ -889,7 +915,8 @@ const HINTS={
 function run(){
   const origins = selected.slice(0, originCount).filter(Boolean);
   if(origins.length < originCount) {
-    alert(originCount === 3 ? 'Please select all three origin cities first.' : 'Please select both origin cities first.');
+    const countWord = {2:'both',3:'all three',4:'all four'}[originCount];
+    alert(`Please select ${countWord} origin cities first.`);
     return;
   }
 
@@ -902,13 +929,11 @@ function run(){
   // the group's average stays reasonable. Each person's individual leg is still
   // separately capped by maxFlight below, so nobody gets a wildly long flight.
   const maxAvg=diffEnabled?parseFloat(document.getElementById('maxDiff').value):Infinity;
-  const allowStop=document.getElementById('allowStop').checked;
   const W={w1:+document.getElementById('w1').value,w2:+document.getElementById('w2').value,
     w3:+document.getElementById('w3').value,w4:+document.getElementById('w4').value,
     w5:+document.getElementById('w5').value,w6:+document.getElementById('w6').value};
   const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const originsNA=origins.map(isNA);
-  const STOP_PENALTY=2.5;
   const matched=[], unmatched=[], nearMiss=[];
 
   const allCities = Object.values(CITY_MAP);
@@ -918,7 +943,6 @@ function run(){
     if(origins.some(o => city.city===o.city && city.country===o.country)) return;
 
     const hs = origins.map(o => bestFlightTime(o, city));
-    let stopover = false;
 
     const avg = hs.reduce((a,b)=>a+b,0) / hs.length;
     const maxLeg = Math.max(...hs);
@@ -961,7 +985,7 @@ function run(){
       if(dev>bestDeviation) bestDeviation=dev;
     });
     const score=Math.round(Math.min(100, weightedAvg + bestDeviation*0.6));
-    matched.push({city,score,hs,avg,diff,prices,scoreArr,stopover,rank:matched.length});
+    matched.push({city,score,hs,avg,diff,prices,scoreArr,rank:matched.length});
   });
 
   matched.sort((a,b)=>b.score-a.score);
@@ -982,14 +1006,14 @@ function run(){
     let nmHtml='';
     if(showNearMiss){
       nmHtml=`<div class="suggest-section">
-        <div class="suggest-title">💡 No exact matches — but these are close. Try enabling stopovers or loosening your filters:</div>
+        <div class="suggest-title">💡 No exact matches — but these are close. Try loosening your filters:</div>
         ${nmSorted.map(r=>`<div class="suggest-card">
           <div><div class="suggest-name">${r.city.flag} ${r.city.city}, ${r.city.country}</div>
           <div class="suggest-meta">${r.hs.map((h,i)=>`${fmtH(h)} from ${origins[i].city}`).join(' · ')} · avg ${fmtH(r.avg)}</div></div>
         </div>`).join('')}
       </div>`;
     }
-    el.innerHTML=`<div class="empty"><div class="ei">✈</div><h3>No destinations match</h3><p>Try raising the max flight time, enabling stopovers,<br>or loosening the average flight time limit.</p></div>${nmHtml}`;
+    el.innerHTML=`<div class="empty"><div class="ei">✈</div><h3>No destinations match</h3><p>Try raising the max flight time,<br>or loosening the average flight time limit.</p></div>${nmHtml}`;
     return;
   }
 
@@ -1013,7 +1037,6 @@ function run(){
         <div class="dname">
           ${r.city.flag} ${r.city.city}<span class="dcountry">${r.city.country}</span>
           ${isTop?'<span class="badge bbest">Best match</span>':''}
-          ${r.stopover?'<span class="badge bstop">via stopover</span>':''}
         </div>
         <div class="dmeta">
           <span style="display:flex;align-items:center;gap:4px">
@@ -1089,7 +1112,7 @@ document.getElementById('diffToggle').addEventListener('change', e => {
 
 // Close dropdowns on outside click
 document.addEventListener('click', e => {
-  [0,1,2].forEach(idx => {
+  [0,1,2,3].forEach(idx => {
     const sw = document.getElementById('sw'+(idx+1));
     if(sw && !sw.contains(e.target)) closeDropdown(idx);
   });
