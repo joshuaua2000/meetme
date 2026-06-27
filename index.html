@@ -97,7 +97,7 @@ h1 em{font-style:italic;color:var(--acc)}
 .wname{font-size:13px;color:var(--ink);display:flex;align-items:center;gap:6px;margin-bottom:6px}
 .wname svg{color:var(--ink3);flex-shrink:0}
 .wrow{display:flex;align-items:center;gap:8px}
-.wend{font-size:16px;line-height:1;flex-shrink:0;user-select:none}
+.wend{font-size:16px;line-height:1;flex-shrink:0;user-select:none;width:24px;text-align:center}
 .witem input[type=range]{-webkit-appearance:none;flex:1;height:3px;border-radius:2px;background:var(--s2);outline:none;cursor:pointer}
 .witem input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:var(--acc);border:2.5px solid #fff;box-shadow:0 0 0 1.5px rgba(45,90,61,.3);cursor:pointer}
 .whint{font-size:11px;color:var(--ink3);margin-top:3px;min-height:16px}
@@ -312,8 +312,8 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
         Max average flight time
       </div>
-      <div class="srow"><input type="range" id="maxDiff" min="0" max="8" step="0.5" value="3"><span class="sbadge" id="mdVal">3h</span></div>
-      <div class="shint" id="mdHint">The group's average flight time stays under 3h</div>
+      <div class="srow"><input type="range" id="maxDiff" min="0" max="16" step="0.5" value="10"><span class="sbadge" id="mdVal">10h</span></div>
+      <div class="shint" id="mdHint">The group's average flight time stays under 10h</div>
     </div>
   </div>
 
@@ -332,8 +332,13 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
   <div class="wgrid">
     <div class="witem">
       <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>Flight cost</div>
-      <div class="wrow"><span class="wend" style="font-size:13px">£</span><input type="range" id="w1" min="1" max="10" value="5"><span class="wend" style="font-size:19px">£££</span></div>
+      <div class="wrow"><span class="wend">£</span><input type="range" id="w1" min="1" max="10" value="5"><span class="wend">£££</span></div>
       <div class="whint" id="h1">5 — Balanced; cost is one factor among several</div>
+    </div>
+    <div class="witem">
+      <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>City cost of living</div>
+      <div class="wrow"><span class="wend" title="Prefer budget cities">💰</span><input type="range" id="w6" min="1" max="10" value="5"><span class="wend" title="Prefer expensive/prestige cities">🏛️</span></div>
+      <div class="whint" id="h6">5 — Neutral; city cost of living doesn't influence the ranking</div>
     </div>
     <div class="witem">
       <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2"/></svg>Weather</div>
@@ -354,11 +359,6 @@ footer{text-align:center;padding:2rem;font-size:12px;color:var(--ink3);border-to
       <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8h1a4 4 0 010 8h-1M2 8h16v9a4 4 0 01-4 4H6a4 4 0 01-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>Nightlife &amp; restaurants</div>
       <div class="wrow"><span class="wend" style="font-size:14px">🌙</span><input type="range" id="w5" min="1" max="10" value="5"><span class="wend" style="font-size:14px">🍽️</span></div>
       <div class="whint" id="h5">5 — Balanced; decent food scene is enough</div>
-    </div>
-    <div class="witem">
-      <div class="wname"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/></svg>City cost of living</div>
-      <div class="wrow"><span class="wend" style="font-size:13px" title="Prefer prestige/expensive cities">🏛️</span><input type="range" id="w6" min="1" max="10" value="5"><span class="wend" style="font-size:13px" title="Prefer budget cities">💰</span></div>
-      <div class="whint" id="h6">5 — Balanced; affordable once there is a bonus</div>
     </div>
   </div>
 
@@ -760,13 +760,11 @@ function sNovelty(c,w){return Math.round(Math.min(100,c.nov*(0.4+w/8)))}
 function sOutdoor(c,w){return Math.round(Math.min(100,c.out*(0.4+w/8)))}
 function sNight(c,w){return Math.round(Math.min(100,c.nite*(0.4+w/8)))}
 function sCityExp(c,w){
-  // Bidirectional: w=0 favours expensive/prestige, w=10 favours budget.
-  // Raw range compressed to 20-80 (±30 from neutral 50) so this dimension
-  // doesn't overwhelm the composite when pushed to max — previously used 5-95
-  // (±45) which caused exp=1 cities to score 95 at w=10, drowning out every
-  // other dimension and pushing exp=4 cities like Reykjavík off the page entirely.
-  const raw = [0, 80, 65, 50, 35, 20][c.exp]; // higher = cheaper, 20-80 range
-  const pull = (w-5)/5; // -1 at w=0, 0 at w=5, +1 at w=10
+  // w=1 (left) → prefer budget cities (exp=1 scores high)
+  // w=5 (middle) → neutral, all exp tiers score 50
+  // w=10 (right) → prefer expensive/prestige cities (exp=5 scores high)
+  const raw = [0, 20, 35, 50, 65, 80][c.exp]; // higher = more expensive, 20-80 range
+  const pull = (w-5)/5; // -1 at w=1, 0 at w=5, +1 at w=10
   return Math.round(50 + (raw-50)*pull);
 }
 
@@ -906,7 +904,7 @@ const HINTS={
   w3:[null,"1 — Famous cities are perfectly fine; novelty irrelevant","2 — Happy with well-known tourist destinations","3 — Slight preference for something a bit different","4 — Would enjoy somewhere less well-trodden","5 — Balanced; a mix of familiar and new works","6 — Lean toward off-the-beaten-path options","7 — Strong preference for unusual or underrated destinations","8 — Want somewhere genuinely surprising and different","9 — Very high novelty is a top priority","10 — Must be somewhere few people think to go"],
   w4:[null,"1 — Outdoors not at all important; prefer urban activities","2 — Happy with a mostly indoor city trip","3 — Wouldn't turn down a nice walk but it's low priority","4 — A bit of outdoor time would be a nice addition","5 — Balanced; some outdoor fun alongside city exploring","6 — Outdoor activities are a meaningful part of the trip","7 — Want good hiking, cycling or nature options","8 — Outdoor activities are a top priority","9 — Need excellent outdoor options — mountains, coast, nature","10 — The whole trip is centred on outdoor adventure"],
   w5:[null,"1 — Not fussed about food or nightlife; basic is fine","2 — A decent meal is all that's needed","3 — Would enjoy a good restaurant but won't plan around it","4 — Food scene matters a little; want some good options","5 — Balanced; a decent dining and bar scene is good","6 — Good restaurants are an important part of the trip","7 — Food and nightlife are a significant priority","8 — Want a genuinely great dining and bar scene","9 — Exceptional food and nightlife is one of the main draws","10 — The food and nightlife scene is the whole point"],
-  w6:[null,"1 — Strong preference for expensive/prestige cities; budget destinations penalised","2 — Lean toward upscale cities; cheap cities score lower","3 — Slight preference for pricier, more cosmopolitan destinations","4 — Marginally prefer higher-end cities, but not a dealbreaker","5 — Neutral; city cost of living doesn't influence the ranking","6 — Slight lean toward affordable destinations","7 — Prefer budget-friendly cities; expensive ones score lower","8 — Strong preference for affordable cities","9 — Budget cities score significantly better","10 — Cheap cities strongly preferred; expensive ones penalised heavily"],
+  w6:[null,"1 — Strongly prefer budget cities; expensive destinations penalised","2 — Clear preference for affordable cities","3 — Lean toward cheaper, more affordable destinations","4 — Slight preference for budget-friendly cities","5 — Neutral; city cost of living doesn't influence the ranking","6 — Slight lean toward more upscale destinations","7 — Prefer pricier, more cosmopolitan cities","8 — Strong preference for expensive/prestige cities","9 — Upscale cities score significantly better","10 — Expensive prestige cities strongly preferred; budget ones penalised"],
 };
 
 // ────────────────────────────────────────────────────────
